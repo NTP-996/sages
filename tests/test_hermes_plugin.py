@@ -111,7 +111,5 @@ def test_missing_skill_fails_naming_it_and_the_recovery(tmp_path: Path) -> None:
 def test_synthetic_tree_is_a_complete_install(tmp_path: Path) -> None:
     ctx = StubCtx()
     load_adapter(synthetic_tree(tmp_path) / "__init__.py").register(ctx)
-    assert [(name, description) for name, _, description in ctx.skills][0] == (
-        "sages",
-        "About sages.",
-    )
+    name, _, description = ctx.skills[0]
+    assert (name, description) == ("sages", "About sages.")
