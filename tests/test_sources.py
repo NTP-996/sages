@@ -117,3 +117,51 @@ def test_the_five_public_domain_teachers_have_sources() -> None:
         "epictetus/long-discourses.txt",
     }
     assert expected <= {p.relative_to(SOURCES).as_posix() for p in source_files()}
+
+
+# --- The two modern figures: nothing of theirs is committed beyond brief, cited excerpts ---
+
+JUNG_EXCERPT_BUDGET = 80_000
+
+
+def test_jung_commits_excerpts_only() -> None:
+    files = sorted((SOURCES / "jung").iterdir())
+    assert files, "sources/jung/ should hold the excerpt files"
+    assert [p.name for p in files if not p.name.endswith("-excerpts.txt")] == []
+    assert sum(p.stat().st_size for p in files) <= JUNG_EXCERPT_BUDGET
+
+
+def test_full_jung_editions_are_ignored_by_git() -> None:
+    import subprocess
+
+    ignored = subprocess.run(
+        ["git", "check-ignore", "-q", "sources-local/jung/collected-papers.txt"],
+        cwd=ROOT,
+        check=False,
+    )
+    assert ignored.returncode == 0
+
+
+def test_no_munger_source_text_is_committed() -> None:
+    assert not (SOURCES / "munger").exists()
+
+
+def test_munger_passages_are_short_and_cited() -> None:
+    import json
+
+    lines = (ROOT / "skills/munger/passages.jsonl").read_text(encoding="utf-8").splitlines()
+    records = [json.loads(line) for line in lines if line.strip()]
+    assert len(records) >= 20
+    for record in records:
+        assert len(record["text"]) <= 300, record["id"]
+        assert record["source_url"].startswith("https://"), record["id"]
+        assert "source_file" not in record, record["id"]
+    assert sum(len(r["text"].split()) for r in records) <= 600, (
+        "keep the total quoted from Munger small"
+    )
+
+
+def test_provenance_records_the_last_remote_recheck() -> None:
+    section = provenance_sections().get("Remote re-verification")
+    assert section, "PROVENANCE.md needs a 'Remote re-verification' section"
+    assert re.search(r"^- \d{4}-\d{2}-\d{2}: \d+/\d+ ", section, re.MULTILINE)

@@ -103,3 +103,45 @@ numbering most modern editions use, the passage's `note` says so.
 - No-words-changed check: passed
 - sha256: a53394b88d8d9c1812e7cfb1aab4a451453d451fc17b10415d178442c8d89a4c
 - bytes: 257937
+
+## sources/jung/collected-papers-excerpts.txt
+
+- Title: Collected Papers on Analytical Psychology (excerpts)
+- Translator: edited by Constance E. Long; translated by Constance E. Long, M. D. Eder and Dora Hecht
+- Published: 1916; second edition 1917
+- Licence basis: the edition is in the public domain in the United States (published before 1931). C. G. Jung died in 1961, so the work remains in copyright where the term is life plus 70 years, until 2032; for that reason only the paragraphs around the quoted passages are kept here, never the work
+- Downloaded from: https://gutenberg.pglaf.org/cache/epub/48225/pg48225.txt (Project Gutenberg ebook 48225, proofread, via the pglaf.org mirror)
+- Retrieved: 2026-11-27
+- Removed: everything except the paragraphs that hold a quoted passage
+- Inserted: one '## Collected Papers <chapter>' heading per chapter quoted
+- Structure: 5 chapters quoted, 16 passages; 19080 bytes kept of 1028185
+- No-words-changed check: passed
+- sha256: 00b02bf3a3215bfac1d2e1c9341cbcf8f0041c92c6b2c82d9ec5919b9572afe5
+- bytes: 19080
+
+## sources/jung/psychology-of-the-unconscious-excerpts.txt
+
+- Title: Psychology of the Unconscious: A Study of the Transformations and Symbolisms of the Libido (excerpts)
+- Translator: Beatrice M. Hinkle (1874-1953)
+- Published: 1916
+- Licence basis: the edition is in the public domain in the United States (published before 1931). C. G. Jung died in 1961, so the work remains in copyright where the term is life plus 70 years, until 2032; for that reason only the paragraphs around the quoted passages are kept here, never the work
+- Downloaded from: https://gutenberg.pglaf.org/cache/epub/65903/pg65903.txt (Project Gutenberg ebook 65903, proofread, via the pglaf.org mirror)
+- Retrieved: 2026-11-27
+- Removed: everything except the paragraphs that hold a quoted passage
+- Inserted: one '## Psychology of the Unconscious <chapter>' heading per chapter quoted
+- Structure: 2 chapters quoted, 3 passages; 6946 bytes kept of 764403
+- No-words-changed check: passed
+- sha256: 9478b19871a2b58cdb642df55e00aca364b321c706992b3f0d1dbecbde14c291
+- bytes: 6946
+
+## skills/munger/passages.jsonl
+
+- Title: Quotations from Charles T. Munger (1924-2023)
+- Policy: remote: no source text is kept in this repository. Each passage carries the title and URL of the public transcript it was cut from and the date it was checked
+- Sources: USC Gould School of Law commencement address, 2007; 'A Lesson on Elementary Worldly Wisdom', USC Marshall School of Business, 1994; 'The Psychology of Human Misjudgment', revised 2005; Harvard School commencement address, 1986
+- Licence basis: none of this is public domain. The passages are brief, cited excerpts (one or two sentences each, under 600 words in total) included for commentary and education; they remain the property of their rights holders and are not covered by this repository's MIT licence
+- Re-check: uv run python scripts/reverify_remote.py --root . --sage munger
+
+## Remote re-verification
+
+- 2026-11-27: 21/21 Munger passages found at their source_url; 19/19 Jung passages found in the full editions (uv run python scripts/reverify_remote.py --root .)
