@@ -18,8 +18,8 @@ command follows that vendor's current documentation or the working reference rep
 
 | Product | How it installs | Status |
 |---|---|---|
-| Hermes Agent | `hermes` branch cloned into `plugins/`, then `hermes plugins enable sages` | Run here on v0.23.4: enabled, `plugins doctor` passes |
-| Any MCP client | `uvx --from git+https://github.com/NTP-996/sages sages-mcp` | Run here: a stdio client listed six tools and checked a quotation |
+| Hermes Agent | `hermes` branch cloned into `plugins/`, then `hermes plugins enable sages` | Run here on v0.23.4 from GitHub: enabled, `plugins doctor` passes |
+| Any MCP client | `uvx --from git+https://github.com/NTP-996/sages sages-mcp` | Run here from GitHub: a stdio client listed six tools and told a real quotation from a fake one |
 | opencode | `.opencode/plugins/sages.js` via the `plugin` array | Shim run under node in the test suite; not run inside opencode |
 | Claude Code | `/plugin marketplace add NTP-996/sages` | Per vendor docs |
 | Claude apps | upload a skill ZIP under Customize > Skills | Per vendor docs (support.claude.com) |
@@ -39,7 +39,7 @@ Steps marked **owner** need the repository owner's account, a login, or a form.
 
 | Where | What it needs | Who | Status |
 |---|---|---|---|
-| GitHub repository | public repo, topics `agent-skills`, `claude-code-plugin`, `gemini-cli-extension`, `mcp`, `hermes-agent` | **owner** (topics) | pushed; topics not set |
+| GitHub repository | public repo, topics `agent-skills`, `claude-code-plugin`, `gemini-cli-extension`, `mcp`, `hermes-agent` | **owner** (topics) | public since 2026-11-27; topics not set |
 | GitHub release with ZIPs | tag push; Actions enabled | automatic | on first tag |
 | Gemini CLI extensions gallery | the `gemini-cli-extension` topic on the public repo | **owner** | not done |
 | Claude plugin directories | a public repo with `.claude-plugin/marketplace.json`; Anthropic's own directory takes submissions by form | **owner** | not submitted |
