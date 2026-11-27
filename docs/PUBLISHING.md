@@ -40,7 +40,7 @@ Steps marked **owner** need the repository owner's account, a login, or a form.
 | Where | What it needs | Who | Status |
 |---|---|---|---|
 | GitHub repository | public repo, topics `agent-skills`, `claude-code-plugin`, `gemini-cli-extension`, `mcp`, `hermes-agent` | **owner** (topics) | public since 2026-11-27; topics not set |
-| GitHub release with ZIPs | tag push; Actions enabled | automatic | on first tag |
+| GitHub release with ZIPs | tag push; Actions enabled | automatic | v0.1.0 released 2026-11-27 with nine skill ZIPs, the wheel and the sdist; the workflow also regenerated the `hermes` branch |
 | Gemini CLI extensions gallery | the `gemini-cli-extension` topic on the public repo | **owner** | not done |
 | Claude plugin directories | a public repo with `.claude-plugin/marketplace.json`; Anthropic's own directory takes submissions by form | **owner** | not submitted |
 | ChatGPT / Codex plugin directory | OpenAI's publishing flow for public plugins | **owner** | not submitted |
