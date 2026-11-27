@@ -1,0 +1,28 @@
+# On a version tag: build the per-skill ZIPs and the wheel, attach them to a GitHub release, and
+# regenerate the "hermes" branch, which holds only what Hermes Agent needs.
+name: release
+on:
+  push:
+    tags: ["v*.*.*"]
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: astral-sh/setup-uv@v5
+      - name: Build
+        run: |
+          uv sync --frozen
+          uv run python scripts/check_release_integrity.py --root . --check-version-sync
+          uv run python scripts/verify_passages.py --root .
+          uv run python scripts/build_dist.py --root . --zips dist/skills --hermes dist/hermes
+          uv build
+      - name: GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/skills/*.zip dist/*.whl dist/*.tar.gz --title "$GITHUB_REF_NAME" --notes-file CHANGELOG.md
+      - name: Publish the hermes branch
+        run: sh scripts/publish-hermes-branch.sh dist/hermes "$GITHUB_REF_NAME"
