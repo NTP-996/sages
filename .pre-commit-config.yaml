@@ -1,0 +1,32 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.9
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy (strict)
+        entry: uv run mypy
+        language: system
+        pass_filenames: false
+        types: [python]
+      - id: verify-passages
+        name: every passage matches its source
+        entry: uv run python scripts/verify_passages.py --root .
+        language: system
+        pass_filenames: false
+        files: ^(skills|sources)/
+      - id: quote-guard
+        name: no unverified quotation in a skill
+        entry: uv run python scripts/quote_guard.py --root .
+        language: system
+        pass_filenames: false
+        files: ^skills/
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.29.0
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]

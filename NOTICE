@@ -1,0 +1,35 @@
+Sages
+Copyright (c) 2026 NTP-996
+
+The code, the skill texts and the documentation in this repository are released under the
+MIT licence (see LICENSE).
+
+Source texts and quotations
+---------------------------
+
+The texts under sources/buddha, sources/laozi, sources/confucius, sources/marcus-aurelius and
+sources/epictetus are in the public domain worldwide or dedicated to the public domain under
+CC0. The edition, translator, year and download location of each are recorded in
+sources/PROVENANCE.md.
+
+Quotations from Carl Gustav Jung are short excerpts from English editions published before
+1931, which are in the public domain in the United States. Jung's work remains in copyright
+in countries with a life-plus-70 term until 2032, so this repository contains excerpts only
+and never a complete work.
+
+Quotations from Charles T. Munger are brief excerpts from his public speeches and writings,
+each cited to its source. No source text of his is included.
+
+The quotations from Jung and Munger remain the property of their respective rights holders.
+They are included as brief, cited excerpts for commentary and education, and they are not
+covered by this repository's MIT licence.
+
+No affiliation
+--------------
+
+The portrayals in this project are AI portrayals written from the cited texts. This project
+is not affiliated with, authorised by or endorsed by any of the people portrayed, their
+families or estates, the Foundation of the Works of C. G. Jung, Berkshire Hathaway Inc.,
+Daily Journal Corporation, or any publisher or translator of their works.
+
+Nothing in this project is medical, psychological, legal, financial or investment advice.

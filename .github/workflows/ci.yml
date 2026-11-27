@@ -1,0 +1,41 @@
+# Every gate a pull request must pass. Nothing here needs the network beyond installing
+# dependencies: passages are checked against the source texts committed under sources/.
+name: ci
+on:
+  push: { branches: [main] }
+  pull_request: {}
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: astral-sh/setup-uv@v5
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - name: Install
+        run: uv sync --frozen
+      - name: Lint
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+      - name: Type check
+        run: uv run mypy
+      - name: Tests and coverage
+        run: uv run pytest --cov=src/sages_mcp --cov-report=term-missing
+      - name: Every passage matches its source
+        run: uv run python scripts/verify_passages.py --root .
+      - name: No unverified quotation in a skill
+        run: uv run python scripts/quote_guard.py --root .
+      - name: Scenario suites are well formed
+        run: uv run python scripts/eval_lint.py --root .
+      - name: Release integrity
+        run: |
+          uv run python scripts/check_release_integrity.py --root . --check-version-sync
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            uv run python scripts/check_release_integrity.py --root . --check-version-bump --base "${{ github.event.pull_request.base.sha }}"
+          fi
+      - name: Dependency audit
+        run: uv run pip-audit
+      - name: Build
+        run: uv build
