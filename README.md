@@ -19,8 +19,8 @@ be anyone's. Sages is built the other way round:
   man reminding himself. Laozi answers in six words and an image. They do not blend into one
   generic sage.
 - **Quotation marks mean something.** A teacher quotes only from a set of passages that were cut
-  from a source text and are re-checked against it, word for word, on every change. Anything else
-  he paraphrases, with a citation, or says he cannot find it.
+  out of a source text, and that are checked against it word for word. Anything else he
+  paraphrases, with a citation, or says he cannot find it.
 - **They disagree, and the council shows it.** Put one question to several of them and you get
   each answer, then where they meet and where they part.
 
@@ -117,6 +117,7 @@ codex plugin add sages@ntp-996
 
 ```bash
 git clone https://github.com/NTP-996/sages
+mkdir -p ~/.cursor/plugins/local
 ln -s "$(pwd)/sages" ~/.cursor/plugins/local/sages
 ```
 
@@ -191,7 +192,7 @@ Every teacher is one markdown file. Paste the contents of `skills/<teacher>/SKIL
 | Talk with one teacher | `Talk to Laozi.` or `What would the Buddha say about my anger at my brother?` |
 | Ask several at once | `Ask the council: ...` or `What would the Stoics say?` or `Ask the three teachings.` |
 | Switch | `Let me hear from Confucius instead.` |
-| Check a quotation | `Did Marcus Aurelius really say this?` |
+| Check a quotation (MCP server) | the `verify_quote` tool, or ask the teacher himself: `Is this line yours?` |
 | Stop | `Thanks, that's all.` or simply ask for something else |
 
 The nine skills are `sages` (the front door), `laozi`, `buddha`, `confucius`, `epictetus`, `marcus-aurelius`, `jung`, `munger` and `sage-council`.
@@ -199,12 +200,15 @@ The nine skills are `sages` (the front door), `laozi`, `buddha`, `confucius`, `e
 ## Why the quotations can be trusted
 
 - The five ancient teachers are quoted from translations that are in the public domain or CC0. The full texts are in [sources/](sources/), each with one heading per chapter, section, discourse or verse.
-- Every passage in `skills/*/passages.jsonl` must be a word-for-word, contiguous span of its source, under the heading it cites. [scripts/verify_passages.py](scripts/verify_passages.py) checks this on every change.
+- Every passage of the five ancient teachers and of Jung must be a word-for-word, contiguous span of a source file in this repository, under the heading it cites. [scripts/verify_passages.py](scripts/verify_passages.py) checks this on every change.
 - No quotation can appear in a skill unless it is one of those passages. [scripts/quote_guard.py](scripts/quote_guard.py) checks that.
-- Jung and Munger are still in copyright, so they are handled differently: Jung is quoted only from his English editions of 1916 and 1917, and only the paragraphs around those quotations are kept here; Munger is quoted in a few short lines, each linked to the transcript it comes from. See [NOTICE](NOTICE) and [sources/PROVENANCE.md](sources/PROVENANCE.md).
+- Jung and Munger are still in copyright, so they are handled differently. Jung is quoted only from his English editions of 1916 and 1917, and only the sentences that hold those quotations are kept here. Munger is quoted in a few short lines, each linked to the transcript it comes from; no text of his is kept here, so those lines are compared with the live transcripts by [scripts/reverify_remote.py](scripts/reverify_remote.py) before a release, not on every change. See [NOTICE](NOTICE) and [sources/PROVENANCE.md](sources/PROVENANCE.md).
+- The check proves a line is in the text. Who is speaking there is checked by a person: the Analects records students, and Jung's papers include letters written to him.
 
 ```bash
-uv run python scripts/verify_passages.py --root .   # 244 passages verified
+uv run python scripts/verify_passages.py --root .
+# 222 passages verified against their committed sources
+# 21 remote passages checked for form only
 ```
 
 ## What they will not do

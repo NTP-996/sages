@@ -12,8 +12,10 @@ therefore writes two things:
 
 * the full texts, to sources-local/jung/ (ignored by git), with one "## <work> <chapter>"
   heading per chapter, for authoring and re-checking passages; and
-* with --excerpts, sources/jung/<slug>-excerpts.txt (committed): only the paragraph around
+* with --excerpts, sources/jung/<slug>-excerpts.txt (committed): only the sentence that holds
   each passage listed in skills/jung/passages.jsonl, under that chapter's heading.
+
+Chapter IX of the Collected Papers is a correspondence; only Jung's own letters are kept.
 
 Usage:
     python scripts/sources/build_jung.py --root .             # full texts, local only
@@ -51,7 +53,53 @@ EDITIONS = {
 }
 CHAPTER = re.compile(r"^\s*CHAPTER ([IVXLC]+)\.?\s*$")
 PART = re.compile(r"^\s*PART ([IVXLC]+)\.?\s*$")
-MAX_EXCERPT_BYTES = 80_000
+MAX_EXCERPT_BYTES = 12_000
+LETTER_FROM = re.compile(r"^_From Dr\. (.+?)\._$")
+ROMAN_ONLY = re.compile(r"^[IVXLC]+\.$")
+SENTENCE_BREAK = re.compile(r"""(?<=[.?!])\s+(?=[A-Z"'(\[\u201c])""")
+
+
+def jung_letters_only(text: str) -> str:
+    """Drop the letters Jung did not write from a chapter printed as correspondence.
+
+    Chapter IX of the Collected Papers alternates letters "From Dr. Loÿ" and "From Dr. Jung".
+    A line in a book by Jung is not thereby Jung's: only his own letters are kept. A chapter
+    with no such markers is returned unchanged.
+    """
+    paragraphs = re.split(r"\n\s*\n", text)
+    if not any(LETTER_FROM.match(paragraph.strip()) for paragraph in paragraphs):
+        return text
+    kept: list[str] = []
+    writer: str | None = None
+    for paragraph in paragraphs:
+        stripped = paragraph.strip()
+        marker = LETTER_FROM.match(stripped)
+        if marker:
+            writer = marker.group(1)
+            continue
+        if ROMAN_ONLY.match(stripped):
+            continue
+        if writer is None or writer.startswith("Jung"):
+            kept.append(paragraph)
+    return "\n\n".join(kept)
+
+
+def sentences_containing(paragraph: str, passage: str) -> str:
+    """Return the sentence, or run of sentences, of paragraph that holds passage."""
+    text = common.normalise(paragraph)
+    wanted = common.normalise(passage)
+    start = text.find(wanted)
+    if start < 0:
+        raise ValueError(f"passage is not in the paragraph: {wanted[:60]!r}")
+    end = start + len(wanted)
+    sentences: list[tuple[int, int]] = []
+    position = 0
+    for match in SENTENCE_BREAK.finditer(text):
+        sentences.append((position, match.start()))
+        position = match.end()
+    sentences.append((position, len(text)))
+    chosen = [(a, b) for a, b in sentences if a < end and b > start]
+    return text[chosen[0][0] : chosen[-1][1]]
 
 
 def collected_papers(body: str) -> list[tuple[str, str]]:
@@ -63,7 +111,7 @@ def collected_papers(body: str) -> list[tuple[str, str]]:
     blocks: list[tuple[str, str]] = []
     for position, (index, numeral) in enumerate(marks):
         stop = marks[position + 1][0] if position + 1 < len(marks) else len(lines)
-        text = "\n".join(lines[index + 1 : stop]).strip("\n")
+        text = jung_letters_only("\n".join(lines[index + 1 : stop]).strip("\n"))
         blocks.append((f"Collected Papers {numeral}", text))
     return blocks
 
@@ -132,16 +180,15 @@ def build_excerpts(root: Path, parsed: dict[str, list[tuple[str, str]]]) -> None
         wanted = [p for p in passages if p["source_file"] == relative]
         excerpts: list[tuple[str, str]] = []
         for heading, text in parsed[slug]:
-            paragraphs = re.split(r"\n\s*\n", text)
-            keep = [
-                paragraph
-                for paragraph in paragraphs
-                if any(
-                    p["under_heading"] == heading
-                    and common.normalise(p["text"]) in common.normalise(paragraph)
-                    for p in wanted
-                )
-            ]
+            keep: list[str] = []
+            for paragraph in re.split(r"\n\s*\n", text):
+                for p in wanted:
+                    if p["under_heading"] == heading and common.normalise(
+                        p["text"]
+                    ) in common.normalise(paragraph):
+                        sentence = sentences_containing(paragraph, p["text"])
+                        if sentence not in keep:
+                            keep.append(sentence)
             if keep:
                 excerpts.append((heading, "\n\n".join(keep)))
         found = sum(
@@ -168,11 +215,12 @@ def build_excerpts(root: Path, parsed: dict[str, list[tuple[str, str]]]) -> None
                 "Licence basis": "the edition is in the public domain in the United States "
                 "(published before 1931). C. G. Jung died in 1961, so the work remains in "
                 "copyright where the term is life plus 70 years, until 2032; for that reason "
-                "only the paragraphs around the quoted passages are kept here, never the work",
+                "only the sentences that hold the quoted passages are kept here, never the work",
                 "Downloaded from": f"{edition['url']} (Project Gutenberg ebook "
                 f"{edition['ebook']}, proofread, via the pglaf.org mirror)",
                 "Retrieved": "2026-11-27",
-                "Removed": "everything except the paragraphs that hold a quoted passage",
+                "Removed": "everything except the sentences that hold a quoted passage; in the "
+                "correspondence of chapter IX, every letter not written by Jung",
                 "Inserted": f"one '## {edition['label']} <chapter>' heading per chapter quoted",
                 "Structure": f"{len(excerpts)} chapters quoted, {len(wanted)} passages; "
                 f"{out.stat().st_size} bytes kept of {full.stat().st_size}",

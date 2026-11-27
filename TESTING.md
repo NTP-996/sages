@@ -11,6 +11,7 @@ uv run python scripts/verify_passages.py --root .     # every passage is in its 
 uv run python scripts/quote_guard.py --root .         # no unverified quotation in a skill
 uv run python scripts/eval_lint.py --root .           # scenario suites are well formed
 uv run python scripts/check_release_integrity.py --root . --check-version-sync
+uv run pip-audit                            # known vulnerabilities in dependencies
 uv build                                    # the wheel bundles skills/ and sources/
 ```
 

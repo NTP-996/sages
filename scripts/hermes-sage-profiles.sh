@@ -10,7 +10,8 @@
 #
 # For each teacher this creates the profile if it is missing (with no bundled skills, so the
 # teacher stays a teacher) and writes the teacher's portrayal as the profile's SOUL.md, with
-# his verified passages beside it. Running it again changes nothing unless --force is given.
+# his verified passages beside it. It never replaces a SOUL.md that was there before it ran,
+# and running it again changes nothing, unless --force is given.
 set -eu
 
 PLUGIN_DIR=$(cd "$(dirname "$0")/.." && pwd)
@@ -51,6 +52,7 @@ for pair in $TEACHERS; do
   home="$HERMES_ROOT/profiles/$profile"
   [ -f "$source_dir/SKILL.md" ] || { echo "missing $source_dir/SKILL.md" >&2; exit 1; }
 
+  created=0
   if [ -d "$home" ]; then
     echo "$profile: profile exists"
   elif [ "$DRY_RUN" -eq 1 ]; then
@@ -58,10 +60,17 @@ for pair in $TEACHERS; do
   else
     hermes profile create "$profile" --no-skills --description "$(describe "$profile")" >/dev/null
     echo "$profile: profile created"
+    created=1
   fi
 
-  if [ -f "$home/SOUL.md" ] && [ "$FORCE" -eq 0 ] && grep -q "portrayal-contract:start" "$home/SOUL.md" 2>/dev/null; then
-    echo "$profile: SOUL.md already holds the portrayal (use --force to replace it)"
+  # A profile this run created may hold Hermes's starter SOUL.md: that one is ours to replace.
+  # Any other existing SOUL.md is the user's, whether or not it is an earlier portrayal.
+  if [ -f "$home/SOUL.md" ] && [ "$FORCE" -eq 0 ] && [ "$created" -eq 0 ]; then
+    if grep -q "portrayal-contract:start" "$home/SOUL.md" 2>/dev/null; then
+      echo "$profile: SOUL.md already holds the portrayal (use --force to replace it)"
+    else
+      echo "$profile: SOUL.md exists and was not written by this script (use --force to replace it)"
+    fi
   elif [ "$DRY_RUN" -eq 1 ]; then
     echo "$profile: would write SOUL.md from skills/$skill/SKILL.md"
   else

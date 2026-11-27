@@ -6,7 +6,10 @@ enforces most of them.
 ## The rules
 
 1. **A quotation is cut from a source, never typed.** Every passage in `skills/*/passages.jsonl`
-   must be a word-for-word span of a file under `sources/`, under the heading it names.
+   must be a word-for-word span of a file under `sources/`, under the heading it names. (Munger
+   is the one exception: his passages cite a public transcript and are re-checked by
+   `scripts/reverify_remote.py`.) The script proves the words are in the text; you must check
+   who is speaking them. A student's saying in the Analects is not Confucius.
 2. **Nothing is quoted in a skill unless it is a passage.** Paraphrase with a citation instead.
 3. **Sources must be free to redistribute.** Public domain everywhere, or CC0. A figure whose
    work is still in copyright needs the treatment described in
@@ -24,8 +27,7 @@ enforces most of them.
    edition, insert one `## <citation>` heading per citable unit, and pass the no-words-changed
    check. Run it; it writes `sources/<id>/` and the entry in `sources/PROVENANCE.md`.
 3. Add `skills/<id>/passages.jsonl`: 25 to 45 passages, each cut from the source, tagged from the
-   theme list in use (`uv run python -c "..."` is not needed: read `list_themes` in the MCP server
-   or grep the existing files). Add the id to `SOURCE_POLICY` in `scripts/verify_passages.py`.
+   theme list in use (the `list_themes` tool of the MCP server prints it). Add the id to `SOURCE_POLICY` in `scripts/verify_passages.py`.
 4. Write `skills/<id>/SKILL.md` with the seven sections in order and the shared ground-rules
    block copied exactly. Keep the body under 1,600 words.
 5. Add the teacher to `skills/sages/roster.json`, to the front door and the council skill, to

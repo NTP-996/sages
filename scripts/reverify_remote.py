@@ -19,6 +19,7 @@ import argparse
 import datetime
 import json
 import sys
+import tempfile
 from collections.abc import Callable
 from html.parser import HTMLParser
 from pathlib import Path
@@ -126,14 +127,23 @@ def check_jung(root: Path, cache: Path) -> tuple[int, list[str]]:
     return len(records), problems
 
 
+def cache_dir(given: str | None) -> Path:
+    """Where downloads go: a new temporary folder, so every run really fetches, unless told."""
+    return Path(given) if given else Path(tempfile.mkdtemp(prefix="sages-reverify-"))
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--root", default=".")
     parser.add_argument("--sage", choices=("munger", "jung"), default=None)
-    parser.add_argument("--cache", default=None, help="download cache (default: a fresh fetch)")
+    parser.add_argument(
+        "--cache",
+        default=None,
+        help="reuse downloads kept in this folder (default: fetch everything again)",
+    )
     args = parser.parse_args(argv)
     root = Path(args.root).resolve()
-    cache = Path(args.cache or root / "sources-local" / "reverify-cache")
+    cache = cache_dir(args.cache)
 
     def fetch(url: str) -> str:
         return common.fetch(url, cache).decode("utf-8", errors="replace")

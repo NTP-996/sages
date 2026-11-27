@@ -94,3 +94,9 @@ def test_local_policy_passages_are_not_fetched(tmp_path: Path) -> None:
 def test_sage_filter_limits_what_is_checked(tmp_path: Path) -> None:
     root = tree(tmp_path, [remote()])
     assert reverify_remote.check_remote(root, lambda url: PAGE, sage="jung") == (0, [])
+
+
+def test_default_cache_is_a_fresh_temporary_directory(tmp_path: Path) -> None:
+    first, second = reverify_remote.cache_dir(None), reverify_remote.cache_dir(None)
+    assert first != second and first.is_dir() and second.is_dir()
+    assert reverify_remote.cache_dir(str(tmp_path / "kept")) == tmp_path / "kept"

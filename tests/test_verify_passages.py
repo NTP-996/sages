@@ -211,7 +211,7 @@ def test_cli_exits_zero_and_reports_the_count_when_clean(tmp_path: Path) -> None
         [sys.executable, str(SCRIPT), "--root", str(root)], capture_output=True, text=True
     )
     assert result.returncode == 0
-    assert "1 passage verified" in result.stdout
+    assert "1 passage verified against its committed source" in result.stdout
 
 
 def test_cli_exits_one_and_prints_each_problem(tmp_path: Path) -> None:
@@ -230,3 +230,15 @@ def test_a_tree_with_no_passages_is_a_failure(tmp_path: Path) -> None:
     )
     assert result.returncode == 1
     assert "no passages found" in result.stdout
+
+
+def test_cli_counts_remote_passages_apart(tmp_path: Path) -> None:
+    root = make_tree(tmp_path, [record()])
+    make_tree(tmp_path, [remote_record()], sage="munger")
+    assert verify_passages.count_by_policy(root) == (1, 1)
+    result = subprocess.run(
+        [sys.executable, str(SCRIPT), "--root", str(root)], capture_output=True, text=True
+    )
+    assert result.returncode == 0
+    assert "1 passage verified against its committed source" in result.stdout
+    assert "1 remote passage checked for form only" in result.stdout

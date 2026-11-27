@@ -35,12 +35,12 @@ class FileSourceRepository:
             for line in path.read_text(encoding="utf-8").splitlines():
                 if line.startswith("## "):
                     if heading is not None:
-                        found.append((heading, loose("\n".join(lines))))
+                        found.append((heading, f" {loose(chr(10).join(lines))} "))
                     heading, lines = line[3:].strip(), []
                 else:
                     lines.append(line)
             if heading is not None:
-                found.append((heading, loose("\n".join(lines))))
+                found.append((heading, f" {loose(chr(10).join(lines))} "))
         return sections
 
     def search(self, loose_text: str, sage_id: str | None) -> tuple[str, str] | None:
@@ -48,10 +48,11 @@ class FileSourceRepository:
             self._sections = self._load()
         if not loose_text:
             return None
+        needle = f" {loose_text} "  # whole words only: sections are stored padded the same way
         for teacher, sections in self._sections.items():
             if sage_id is not None and teacher != sage_id:
                 continue
             for heading, text in sections:
-                if loose_text in text:
+                if needle in text:
                     return teacher, heading
         return None

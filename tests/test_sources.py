@@ -121,7 +121,7 @@ def test_the_five_public_domain_teachers_have_sources() -> None:
 
 # --- The two modern figures: nothing of theirs is committed beyond brief, cited excerpts ---
 
-JUNG_EXCERPT_BUDGET = 80_000
+JUNG_EXCERPT_BUDGET = 12_000
 
 
 def test_jung_commits_excerpts_only() -> None:
@@ -165,3 +165,21 @@ def test_provenance_records_the_last_remote_recheck() -> None:
     section = provenance_sections().get("Remote re-verification")
     assert section, "PROVENANCE.md needs a 'Remote re-verification' section"
     assert re.search(r"^- \d{4}-\d{2}-\d{2}: \d+/\d+ ", section, re.MULTILINE)
+
+
+@pytest.mark.parametrize("path", source_files(), ids=lambda p: str(p.relative_to(SOURCES)))
+def test_no_editor_footnotes_or_captions_are_committed(path: Path) -> None:
+    """A translator's footnote or a picture caption is not the teacher's words."""
+    lines = path.read_text(encoding="utf-8").splitlines()
+    assert [line[:60] for line in lines if line.startswith("↑")] == []
+    assert [line[:60] for line in lines if "[Illustration" in line] == []
+
+
+def test_jung_excerpts_hold_only_jungs_own_words() -> None:
+    import json
+
+    text = (SOURCES / "jung" / "collected-papers-excerpts.txt").read_text(encoding="utf-8")
+    assert "If I understand you aright" not in text, "that paragraph is Dr. Loÿ writing to Jung"
+    lines = (ROOT / "skills/jung/passages.jsonl").read_text(encoding="utf-8").splitlines()
+    ids = [json.loads(line)["id"] for line in lines if line.strip()]
+    assert "jung-cp-self-knowledge" not in ids and len(ids) >= 18

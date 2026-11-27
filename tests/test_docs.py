@@ -73,8 +73,10 @@ def test_readme_quotes_only_verified_passages() -> None:
 
 def test_readme_passage_count_is_measured() -> None:
     total, problems = verify_passages.verify(ROOT)
-    assert problems == []
-    assert f"# {total} passages verified" in README
+    local, remote = verify_passages.count_by_policy(ROOT)
+    assert problems == [] and local + remote == total
+    assert f"# {local} passages verified against their committed sources" in README
+    assert f"# {remote} remote passages checked for form only" in README
     assert f"{total} passages" in (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
 
 
@@ -160,3 +162,15 @@ def test_profile_script_writes_the_portrayal_once(tmp_path: Path) -> None:
     assert "My own note." in soul.read_text(encoding="utf-8")
     run_script(env, "--force")
     assert "My own note." not in soul.read_text(encoding="utf-8")
+
+
+def test_profile_script_keeps_a_soul_it_did_not_write(tmp_path: Path) -> None:
+    env = stub_hermes(tmp_path)
+    mine = tmp_path / "home" / "profiles" / "jung" / "SOUL.md"
+    mine.parent.mkdir(parents=True)
+    mine.write_text("You are my own Jung agent.\n", encoding="utf-8")
+    output = run_script(env)
+    assert "jung: SOUL.md exists and was not written by this script" in output
+    assert mine.read_text(encoding="utf-8") == "You are my own Jung agent.\n"
+    run_script(env, "--force")
+    assert mine.read_text(encoding="utf-8").startswith("# Carl Jung")

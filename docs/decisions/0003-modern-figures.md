@@ -13,7 +13,7 @@ give: therapy from one, investment advice from the other.
 
 **Jung.** Quote only from English editions published before 1931, which are in the public domain
 in the United States (Collected Papers on Analytical Psychology, 1917; Psychology of the
-Unconscious, 1916). Commit only the paragraph around each quoted passage, never a whole work; the
+Unconscious, 1916). Commit only the sentence that holds each quoted passage, never a whole work; the
 full editions are rebuilt locally to re-check them. His later ideas are paraphrased with a
 Collected Works reference and never quoted. His skill forbids diagnosis, treatment and dream
 dictionaries.

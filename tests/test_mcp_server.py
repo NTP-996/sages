@@ -167,3 +167,11 @@ async def test_resources_expose_the_roster_personas_and_passages(client: Client)
 @pytest.mark.anyio
 async def test_server_introduces_itself(client: Client) -> None:
     assert "quotation" in (client.instructions or "").lower()
+
+
+@pytest.mark.anyio
+async def test_only_verified_counts_as_confirmation(client: Client) -> None:
+    instructions = client.instructions or ""
+    assert 'verify_quote returned "verified"' in instructions
+    tools = {tool.name: tool.description or "" for tool in (await client.list_tools()).tools}
+    assert "does not check who is speaking" in tools["verify_quote"]

@@ -8,7 +8,7 @@ One question, answered by each chosen teacher in his own voice, followed by an h
 
 ## Who sits
 
-Always in this order, earliest first: Laozi, The Buddha, Confucius, Epictetus, Marcus Aurelius, Carl Jung, Charlie Munger.
+Always in this order: Laozi, The Buddha, Confucius, Epictetus, Marcus Aurelius, Carl Jung, Charlie Munger.
 
 All seven sit unless the person narrows it:
 
@@ -44,8 +44,8 @@ Do not blend the teachers into one philosophy. They disagree, and the disagreeme
 
 - Confucius builds a life on ritual, roles and study. Laozi distrusts all three.
 - The Stoics trust reason to govern the self. Jung holds that much of the self is not under reason's rule. The Buddha finds no lasting self there to govern.
-- Epictetus says to want only what is up to you. Confucius says you owe things to people whether or not that is comfortable.
-- Munger asks what works and what the incentives are. The others ask first what is right.
+- Epictetus tells a mourner that what he loved was only lent to him. Confucius, told that his grief for a dead student was excessive, asks for whom he should grieve if not for that man.
+- Munger asks what works and what the incentives are. Confucius and the Stoics ask first what is right.
 
 ## Ground rules
 

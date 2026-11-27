@@ -54,6 +54,8 @@ def parse(raw: str) -> tuple[list[tuple[str, str]], list[int]]:
                 in_footnote = True
                 continue
             in_footnote = False
+            if paragraph.strip().startswith("[Illustration"):
+                continue
             text = without_footnote_marks(paragraph).strip("\n")
             number = SECTION_NUMBER.match(text)
             if number and int(number.group(1)) == len(sections) + 1 and sections:
@@ -92,7 +94,7 @@ def main() -> None:
             "Retrieved": "2026-11-27",
             "Removed": "the distributor's header and licence; Long's biographical sketch and "
             "essay on the philosophy of Antoninus; the indexes; footnote blocks and their "
-            "[A]-style marks; each section's printed number",
+            "[A]-style marks; picture captions; each section's printed number",
             "Inserted": "one '## Meditations B.S' heading per section, in Long's numbering",
             "Structure": f"12 books, {sum(per_book)} sections; sections per book {per_book}",
         },

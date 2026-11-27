@@ -50,8 +50,9 @@ def register(ctx: Any) -> None:
         raise RuntimeError(
             "sages plugin install is incomplete - missing: "
             + ", ".join(missing)
-            + ". Reinstall with: hermes plugins install NTP-996/sages --force "
-            "(see INSTALL_FOR_HERMES.md in the plugin directory)."
+            + ". Remove this directory and clone it again: git clone --depth 1 --branch hermes "
+            "https://github.com/NTP-996/sages <HERMES_HOME>/plugins/sages "
+            "(see INSTALL_FOR_HERMES.md)."
         )
     for name in SKILLS:
         skill_md = REPO_ROOT / "skills" / name / "SKILL.md"

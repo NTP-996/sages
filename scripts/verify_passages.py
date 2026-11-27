@@ -224,6 +224,21 @@ def verify(root: Path) -> tuple[int, list[str]]:
     return total, problems
 
 
+def count_by_policy(root: Path) -> tuple[int, int]:
+    """Return (passages compared with a committed source, remote passages checked for form)."""
+    local = remote = 0
+    for passages_path in sorted((root.resolve() / "skills").glob("*/passages.jsonl")):
+        try:
+            count = len(load_passages(passages_path))
+        except ValueError:
+            continue
+        if SOURCE_POLICY.get(passages_path.parent.name) == "remote":
+            remote += count
+        else:
+            local += count
+    return local, remote
+
+
 def check_passages(root: Path) -> list[str]:
     """Return one line per problem; an empty list means every passage is what its source says."""
     return verify(root)[1]
@@ -242,7 +257,17 @@ def main(argv: list[str] | None = None) -> int:
         for problem in problems:
             print(f"- {problem}")
         return 1
-    print(f"{total} passage{'' if total == 1 else 's'} verified")
+    local, remote = count_by_policy(Path(args.root))
+    one = local == 1
+    print(
+        f"{local} passage{'' if one else 's'} verified against "
+        f"{'its committed source' if one else 'their committed sources'}"
+    )
+    if remote:
+        print(
+            f"{remote} remote passage{'' if remote == 1 else 's'} checked for form only "
+            "(scripts/reverify_remote.py compares them with their live sources)"
+        )
     return 0
 
 

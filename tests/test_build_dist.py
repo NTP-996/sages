@@ -87,3 +87,33 @@ def test_cli_writes_both(tmp_path: Path) -> None:
         and (tmp_path / "z" / "buddha.zip").is_file()
         and (tmp_path / "h" / "plugin.yaml").is_file()
     )
+
+
+def test_publish_script_pushes_one_commit_holding_exactly_the_tree(tmp_path: Path) -> None:
+    import subprocess
+
+    def git(*args: str, cwd: Path) -> str:
+        done = subprocess.run(["git", *args], cwd=cwd, capture_output=True, text=True, check=True)
+        return done.stdout.strip()
+
+    bare = tmp_path / "remote.git"
+    git("init", "-q", "--bare", str(bare), cwd=tmp_path)
+    work = tmp_path / "work"
+    work.mkdir()
+    git("init", "-q", "-b", "main", cwd=work)
+    git("remote", "add", "origin", "https://example.invalid/never-used.git", cwd=work)
+    git("remote", "set-url", "--push", "origin", str(bare), cwd=work)
+    (work / "tracked.txt").write_text("stays as it is", encoding="utf-8")
+    tree = build_dist.build_hermes_tree(ROOT, tmp_path / "hermes")
+    script = ROOT / "scripts" / "publish-hermes-branch.sh"
+    done = subprocess.run(
+        ["sh", str(script), str(tree), "v9.9.9"], cwd=work, capture_output=True, text=True
+    )
+    assert done.returncode == 0, done.stderr
+    assert git("rev-list", "--count", "hermes", cwd=bare) == "1"
+    pushed = set(git("ls-tree", "-r", "--name-only", "hermes", cwd=bare).splitlines())
+    assert pushed == {p.relative_to(tree).as_posix() for p in tree.rglob("*") if p.is_file()}
+    assert "v9.9.9" in git("log", "-1", "--format=%s", "hermes", cwd=bare)
+    assert git("status", "--porcelain", cwd=work) == "?? tracked.txt", (
+        "the working repository is untouched"
+    )

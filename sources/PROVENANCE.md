@@ -11,8 +11,10 @@ unless every paragraph it wrote is found word for word in the download. To rebui
 
     uv run python scripts/sources/build_laozi.py --root .
 
-Chapter and section numbers are those of the translation itself. Where they differ from the
-numbering most modern editions use, the passage's `note` says so.
+Chapter and section numbers are those of the translation itself. Modern editions number some
+books differently (the Analects often by one or two chapters, and by more in Book 10; Long's
+Enchiridion has 52 chapters where most have 53). A passage's `note` gives the modern number in
+the few cases where it has been checked; elsewhere, look a passage up by its wording.
 
 ## sources/laozi/legge-tao-teh-king.txt
 
@@ -86,8 +88,8 @@ numbering most modern editions use, the passage's `note` says so.
 - Inserted: one '## Discourses B.C' heading per chapter; the line after it is Long's chapter title
 - Structure: 4 books, 95 chapters; chapters per book [30, 26, 26, 13]
 - No-words-changed check: passed
-- sha256: 4b11b7e504213bbe4fc02076af5d3735771a93e556e942cdfe5c5758606e7bc4
-- bytes: 649413
+- sha256: 3354a5cc8e0a9943d58e689d8874a4f337df8798ab17f2c3c892e4778e5343fc
+- bytes: 621916
 
 ## sources/marcus-aurelius/long-meditations.txt
 
@@ -97,42 +99,42 @@ numbering most modern editions use, the passage's `note` says so.
 - Licence basis: public domain worldwide (the translator died in 1879)
 - Downloaded from: https://gutenberg.pglaf.org/cache/epub/15877/pg15877.txt (Project Gutenberg ebook 15877, via the pglaf.org mirror)
 - Retrieved: 2026-11-27
-- Removed: the distributor's header and licence; Long's biographical sketch and essay on the philosophy of Antoninus; the indexes; footnote blocks and their [A]-style marks; each section's printed number
+- Removed: the distributor's header and licence; Long's biographical sketch and essay on the philosophy of Antoninus; the indexes; footnote blocks and their [A]-style marks; picture captions; each section's printed number
 - Inserted: one '## Meditations B.S' heading per section, in Long's numbering
 - Structure: 12 books, 487 sections; sections per book [17, 17, 16, 51, 36, 59, 75, 61, 42, 38, 39, 36]
 - No-words-changed check: passed
-- sha256: a53394b88d8d9c1812e7cfb1aab4a451453d451fc17b10415d178442c8d89a4c
-- bytes: 257937
+- sha256: f2d22cbd05e601d7f7ff69ffe0bac23a5c29dfc8884b14202bd7dc07d6a03216
+- bytes: 257816
 
 ## sources/jung/collected-papers-excerpts.txt
 
 - Title: Collected Papers on Analytical Psychology (excerpts)
 - Translator: edited by Constance E. Long; translated by Constance E. Long, M. D. Eder and Dora Hecht
 - Published: 1916; second edition 1917
-- Licence basis: the edition is in the public domain in the United States (published before 1931). C. G. Jung died in 1961, so the work remains in copyright where the term is life plus 70 years, until 2032; for that reason only the paragraphs around the quoted passages are kept here, never the work
+- Licence basis: the edition is in the public domain in the United States (published before 1931). C. G. Jung died in 1961, so the work remains in copyright where the term is life plus 70 years, until 2032; for that reason only the sentences that hold the quoted passages are kept here, never the work
 - Downloaded from: https://gutenberg.pglaf.org/cache/epub/48225/pg48225.txt (Project Gutenberg ebook 48225, proofread, via the pglaf.org mirror)
 - Retrieved: 2026-11-27
-- Removed: everything except the paragraphs that hold a quoted passage
+- Removed: everything except the sentences that hold a quoted passage; in the correspondence of chapter IX, every letter not written by Jung
 - Inserted: one '## Collected Papers <chapter>' heading per chapter quoted
-- Structure: 5 chapters quoted, 16 passages; 19080 bytes kept of 1028185
+- Structure: 5 chapters quoted, 15 passages; 2909 bytes kept of 996105
 - No-words-changed check: passed
-- sha256: 00b02bf3a3215bfac1d2e1c9341cbcf8f0041c92c6b2c82d9ec5919b9572afe5
-- bytes: 19080
+- sha256: ffc5aace4671c5c394cfcde7816ff6000b908fab5b78fb7c7fee75da4251ab91
+- bytes: 2909
 
 ## sources/jung/psychology-of-the-unconscious-excerpts.txt
 
 - Title: Psychology of the Unconscious: A Study of the Transformations and Symbolisms of the Libido (excerpts)
 - Translator: Beatrice M. Hinkle (1874-1953)
 - Published: 1916
-- Licence basis: the edition is in the public domain in the United States (published before 1931). C. G. Jung died in 1961, so the work remains in copyright where the term is life plus 70 years, until 2032; for that reason only the paragraphs around the quoted passages are kept here, never the work
+- Licence basis: the edition is in the public domain in the United States (published before 1931). C. G. Jung died in 1961, so the work remains in copyright where the term is life plus 70 years, until 2032; for that reason only the sentences that hold the quoted passages are kept here, never the work
 - Downloaded from: https://gutenberg.pglaf.org/cache/epub/65903/pg65903.txt (Project Gutenberg ebook 65903, proofread, via the pglaf.org mirror)
 - Retrieved: 2026-11-27
-- Removed: everything except the paragraphs that hold a quoted passage
+- Removed: everything except the sentences that hold a quoted passage; in the correspondence of chapter IX, every letter not written by Jung
 - Inserted: one '## Psychology of the Unconscious <chapter>' heading per chapter quoted
-- Structure: 2 chapters quoted, 3 passages; 6946 bytes kept of 764403
+- Structure: 2 chapters quoted, 3 passages; 590 bytes kept of 764403
 - No-words-changed check: passed
-- sha256: 9478b19871a2b58cdb642df55e00aca364b321c706992b3f0d1dbecbde14c291
-- bytes: 6946
+- sha256: 5547917b16ce74a2358fec194cf45447ae0cf8b5a53f5aad8d7eaf1670fb8190
+- bytes: 590
 
 ## skills/munger/passages.jsonl
 
@@ -144,4 +146,4 @@ numbering most modern editions use, the passage's `note` says so.
 
 ## Remote re-verification
 
-- 2026-11-27: 21/21 Munger passages found at their source_url; 19/19 Jung passages found in the full editions (uv run python scripts/reverify_remote.py --root .)
+- 2026-11-27: 21/21 Munger passages found at their source_url; 18/18 Jung passages found in the full editions, in Jung's own letters and essays (uv run python scripts/reverify_remote.py --root ., fresh fetch)

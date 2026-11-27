@@ -16,8 +16,10 @@ INSTRUCTIONS = (
     "Sages serves portrayals of seven teachers (Laozi, the Buddha, Confucius, Epictetus, Marcus "
     "Aurelius, Carl Jung, Charlie Munger) and their source-verified passages. Call get_sage for "
     "the instructions to speak as one teacher, or convene_council to answer one question in "
-    "several voices; you write the reply. Put quotation marks only around a quotation that "
-    "find_passages returned or verify_quote confirmed. This server makes no model calls."
+    "several voices; you write the reply. Put quotation marks only around a passage that "
+    'find_passages returned, or for which verify_quote returned "verified". An "in-source" '
+    "result means the words are in the book, not that the teacher said them. This server "
+    "makes no model calls."
 )
 
 

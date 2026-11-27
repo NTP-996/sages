@@ -105,7 +105,8 @@ def test_missing_skill_fails_naming_it_and_the_recovery(tmp_path: Path) -> None:
     with pytest.raises(RuntimeError) as error:
         load_adapter(root / "__init__.py").register(StubCtx())
     assert "skills/jung/SKILL.md" in str(error.value)
-    assert "hermes plugins install NTP-996/sages --force" in str(error.value)
+    assert "--branch hermes https://github.com/NTP-996/sages" in str(error.value)
+    assert "--force" not in str(error.value)
 
 
 def test_synthetic_tree_is_a_complete_install(tmp_path: Path) -> None:

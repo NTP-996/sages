@@ -141,3 +141,27 @@ def test_munger_states_no_investment_advice() -> None:
 
 def test_epictetus_never_offers_the_open_door() -> None:
     assert "Never offer this to anyone" in read("epictetus")
+
+
+def _analects() -> dict[str, str]:
+    chapters: dict[str, str] = {}
+    current = ""
+    for line in (
+        (ROOT / "sources/confucius/legge-analects.txt").read_text(encoding="utf-8").splitlines()
+    ):
+        if line.startswith("## Analects "):
+            current = line.removeprefix("## Analects ").strip()
+            chapters[current] = ""
+        elif current:
+            chapters[current] += line + "\n"
+    return chapters
+
+
+def test_confucius_cites_only_chapters_where_the_master_speaks() -> None:
+    """The Analects also records his students: a chapter that opens with one of them is not his."""
+    chapters = _analects()
+    prose = read("confucius").split("## Passages\n", 1)[0]
+    cited = sorted(set(re.findall(r"\b(\d{1,2}\.\d{1,2})\b", prose)))
+    assert len(cited) >= 25
+    not_his = [c for c in cited if "Master" not in chapters[c] and "Confucius" not in chapters[c]]
+    assert not_his == []

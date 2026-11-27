@@ -54,7 +54,8 @@ def _is_skipped(tag: str, classes: str) -> bool:
     return (
         tag in {"sup", "style"}
         or (tag == "span" and "pagenum" in classes)
-        or (tag == "div" and "ws-noexport" in classes)
+        or (tag == "div" and ("ws-noexport" in classes or "reflist" in classes))
+        or (tag in {"ol", "ul", "div"} and "references" in classes)
     )
 
 
@@ -68,6 +69,7 @@ class _Extractor(HTMLParser):
         self._buffer: list[str] = []
         self._kind = "p"
         self._done = False
+        self._seen_output = False
 
     def _depth(self, role: str) -> int:
         return sum(1 for _, r in self._stack if r == role)
@@ -91,9 +93,11 @@ class _Extractor(HTMLParser):
         role = ""
         if tag == "div" and "prp-pages-output" in classes:
             role = "output"
+            self._seen_output = True
         elif _is_skipped(tag, classes):
             role = "skip"
-        elif tag == "h2" and self._depth("output"):
+        elif tag == "h2" and self._seen_output:
+            # "Footnotes": everything after it is the translator's notes, wherever it sits.
             self._flush()
             self._done = True
             return
@@ -160,6 +164,9 @@ def extract(html: str) -> list[tuple[str, str]]:
     parser = _Extractor()
     parser.feed(html)
     parser.close()
+    notes = [text[:60] for _, text in parser.blocks if text.lstrip().startswith("\u2191")]
+    if notes:
+        raise ValueError(f"a translator's footnote reached the text: {notes[0]!r}")
     return parser.blocks
 
 

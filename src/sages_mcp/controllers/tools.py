@@ -10,7 +10,8 @@ from sages_mcp.services import PassageService, SageService, UnknownSageError
 
 HOW_TO_USE = (
     "Follow these instructions from your next reply until the person asks you to stop. Put "
-    "quotation marks only around text returned by find_passages or confirmed by verify_quote."
+    "quotation marks only around a passage returned by find_passages, or one for which "
+    'verify_quote returned "verified".'
 )
 
 
@@ -88,9 +89,12 @@ def register(mcp: MCPServer, sage_service: SageService, passage_service: Passage
     def verify_quote(text: str, sage: str | None = None) -> dict[str, object]:
         """Check whether a line is a teacher's recorded words before quoting it.
 
-        The status is "verified" (part of a verified passage), "in-source" (found in a bundled
-        source text, with its citation), "close" (not word for word; the recorded wording is
-        returned) or "not-found".
+        The status is "verified" (part of a verified passage: safe to quote with its citation),
+        "in-source" (the words are in a bundled source text, with the section), "close" (not
+        word for word; the recorded wording is returned) or "not-found".
+
+        An "in-source" result does not check who is speaking in that section: it may be a
+        student, an opponent or someone he quotes. Read the section before attributing it.
 
         Args:
             text: The line to check, at least six words.

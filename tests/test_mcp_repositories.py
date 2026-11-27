@@ -60,3 +60,13 @@ def test_data_dir_says_where_it_looked_when_nothing_is_there(
     monkeypatch.delenv(settings.ENV_DATA_DIR, raising=False)
     with pytest.raises(RuntimeError, match="SAGES_DATA_DIR"):
         settings.data_dir()
+
+
+def test_source_search_matches_whole_words_only() -> None:
+    sources = FileSourceRepository(ROOT)
+    assert (
+        sources.search(
+            loose("eek not that the things which happen should happen as you wish"), None
+        )
+        is None
+    )

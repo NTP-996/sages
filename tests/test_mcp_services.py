@@ -216,3 +216,50 @@ def test_too_short_to_check(passages: PassageService) -> None:
 def test_verify_quote_with_unknown_sage_raises(passages: PassageService) -> None:
     with pytest.raises(UnknownSageError):
         passages.verify_quote("some six word line goes right here", "seneca")
+
+
+SHORT = Passage(
+    id="marcus-aurelius-7-29",
+    sage="marcus-aurelius",
+    text="Confine thyself to the present.",
+    citation="Meditations 7.29",
+    work="Meditations",
+    themes=("attention",),
+)
+IRONIC = Passage(
+    id="epictetus-ironic",
+    sage="epictetus",
+    text="First, be unreliable. Do not faithfully do what you have engaged to do.",
+    citation="A talk",
+    work="A talk",
+    themes=("honesty",),
+)
+
+
+class MoreSages(FakeSages):
+    def passages(self, sage_id: str) -> tuple[Passage, ...]:
+        return (*super().passages(sage_id), *(p for p in (SHORT, IRONIC) if p.sage == sage_id))
+
+
+@pytest.fixture
+def more(sages: SageService) -> PassageService:
+    return PassageService(MoreSages(), FakeSources(), SageService(MoreSages()))
+
+
+def test_a_truncated_first_word_is_not_verified(more: PassageService) -> None:
+    """ "reliable" is not "unreliable": matching must stop at word boundaries."""
+    check = more.verify_quote("reliable. Do not faithfully do what you have engaged to do", None)
+    assert check.status != "verified"
+
+
+def test_a_whole_passage_shorter_than_six_words_verifies(more: PassageService) -> None:
+    check = more.verify_quote("Confine thyself to the present.", "marcus")
+    assert check.status == "verified" and check.matches[0].citation == "Meditations 7.29"
+
+
+def test_in_source_says_the_speaker_was_not_checked(passages: PassageService) -> None:
+    check = passages.verify_quote(
+        "Lameness is an impediment to the leg, but not to the will.", None
+    )
+    assert check.status == "in-source"
+    assert "not checked who is speaking" in check.note

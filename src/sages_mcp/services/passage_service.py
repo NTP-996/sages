@@ -73,6 +73,10 @@ class PassageService:
         teacher = self._sages.resolve(sage) if sage else None
         claimed = loose(text)
         claimed_words = set(claimed.split())
+        pool = self._pool(sage)
+        whole = tuple(passage for passage in pool if claimed and claimed == loose(passage.text))
+        if whole:
+            return QuoteCheck("verified", whole, None, "This is a verified passage, word for word.")
         if len(claimed.split()) < MIN_QUOTE_WORDS:
             return QuoteCheck(
                 "not-found",
@@ -80,8 +84,8 @@ class PassageService:
                 None,
                 "Too short to check reliably: give at least six words of the line.",
             )
-        pool = self._pool(sage)
-        exact = tuple(passage for passage in pool if claimed in loose(passage.text))
+        # Compare whole words: "reliable" must not match inside "unreliable".
+        exact = tuple(passage for passage in pool if f" {claimed} " in f" {loose(passage.text)} ")
         if exact:
             return QuoteCheck(
                 "verified", exact, None, "These words are part of a verified passage."
@@ -93,8 +97,9 @@ class PassageService:
                 "in-source",
                 (),
                 heading,
-                f"Found in the bundled source text for {teacher_id}, under {heading}. It is not "
-                "one of the curated passages, so quote it exactly as the source prints it.",
+                f"Found in the bundled source text for {teacher_id}, under {heading}. This tool "
+                "has not checked who is speaking there: it may be a student, an opponent or "
+                "someone he is quoting. Read the section before attributing the line to him.",
             )
         best, score = None, 0.0
         for passage in pool:

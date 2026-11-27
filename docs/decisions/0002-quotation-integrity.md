@@ -19,7 +19,10 @@ these teachers never said. A portrayal that repeats them is worse than no portra
 ## Consequences
 
 - Passages are cut out of the source by start and end phrase, never typed.
-- Citations use the numbering of the translation quoted; a note gives the modern number where
-  it differs.
+- Citations use the numbering of the translation quoted, which modern editions do not always
+  share; a note gives the modern number only where it has been checked.
+- The scripts prove that the words are in the text, not who is speaking them. That check is a
+  person's: the first release shipped a line of Dr. Loÿ's as Jung's until a reviewer caught it,
+  and the Jung builder now keeps only Jung's own letters.
 - Translations are limited to ones that are free to redistribute, so the English is Victorian
   in places. That is the price of being checkable.
