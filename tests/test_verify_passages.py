@@ -89,6 +89,23 @@ def test_wrong_heading_fails(tmp_path: Path) -> None:
     assert "Enchiridion 1" in found[0] and "Enchiridion 5" in found[0]
 
 
+def test_a_line_repeated_under_two_headings_is_checked_under_the_one_named(tmp_path: Path) -> None:
+    twice = (
+        "## Enchiridion 1\nIt is not things that disturb us.\n\n"
+        "## Enchiridion 5\nIt is not things that disturb us.\n"
+    )
+
+    def check(heading: str) -> list[str]:
+        line = record(text="It is not things that disturb us.", under_heading=heading)
+        root = make_tree(tmp_path, [line])
+        (root / "sources" / "epictetus" / "long.txt").write_text(twice, encoding="utf-8")
+        return verify_passages.check_passages(root)
+
+    assert check("Enchiridion 5") == []
+    found = check("Enchiridion 9")
+    assert len(found) == 1 and "Enchiridion 9" in found[0]
+
+
 def test_whitespace_differences_pass(tmp_path: Path) -> None:
     spaced = record(text="Of things some are in our power,\n\tand   others are not.")
     assert problems(tmp_path, [spaced]) == []

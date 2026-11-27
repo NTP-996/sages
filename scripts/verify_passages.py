@@ -98,10 +98,15 @@ class _Source:
         self.normalised = "".join(chars)
         self._line_of = line_of
 
-    def find(self, text: str) -> int | None:
-        """Return the 1-based line where text starts, or None when it is not in the file."""
-        offset = self.normalised.find(normalise(text))
-        return None if offset < 0 else self._line_of[offset]
+    def find_all(self, text: str) -> list[int]:
+        """Return the 1-based line of every place text starts; empty when it is not in the file."""
+        needle = normalise(text)
+        lines: list[int] = []
+        offset = self.normalised.find(needle)
+        while offset >= 0:
+            lines.append(self._line_of[offset])
+            offset = self.normalised.find(needle, offset + 1)
+        return lines
 
     def heading_before(self, line_number: int) -> str | None:
         for index in range(min(line_number, len(self.lines)) - 1, -1, -1):
@@ -155,13 +160,15 @@ def _local_problems(record: Record, root: Path, cache: dict[Path, _Source]) -> l
     if source_path not in cache:
         cache[source_path] = _Source(source_path)
     source = cache[source_path]
-    line = source.find(text)
-    if line is None:
+    lines = source.find_all(text)
+    if not lines:
         return [*problems, f"text not found verbatim in {record['source_file']}"]
-    heading = source.heading_before(line)
-    if heading != record["under_heading"]:
+    # A line can recur (a refrain, a formula): it verifies if any occurrence sits under the
+    # heading the passage names.
+    headings = [source.heading_before(line) for line in lines]
+    if record["under_heading"] not in headings:
         problems.append(
-            f"found at line {line} under heading {heading!r}, "
+            f"found at line {lines[0]} under heading {headings[0]!r}, "
             f"but under_heading says {record['under_heading']!r}"
         )
     return problems
