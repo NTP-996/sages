@@ -84,8 +84,8 @@ extend-exclude = ["sources", "sources-local", "docs-private", ".superpowers"]
 select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
 
 [tool.ruff.lint.per-file-ignores]
-# Source texts quote curly punctuation on purpose.
-"tests/*" = ["RUF001"]
+# Source texts quote curly punctuation on purpose; test fixtures are long literal strings.
+"tests/*" = ["RUF001", "E501"]
 "scripts/*" = ["RUF001"]
 
 [tool.ruff.format]
