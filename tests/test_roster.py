@@ -4,7 +4,7 @@ import json
 import re
 from pathlib import Path
 
-from tests.test_skills import PERSONAS, split
+from test_skills import PERSONAS, split
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ROOT / "skills"

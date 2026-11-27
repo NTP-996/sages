@@ -1,0 +1,5 @@
+manifest_version: 1
+name: sages
+version: "0.1.0"
+description: Seven teachers to talk with - the Buddha, Laozi, Confucius, Marcus Aurelius, Epictetus, Carl Jung and Charlie Munger - each quoting only passages checked against a source text.
+kind: standalone

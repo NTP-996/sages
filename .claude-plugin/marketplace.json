@@ -1,0 +1,15 @@
+{
+  "name": "ntp-996",
+  "owner": {
+    "name": "NTP-996"
+  },
+  "description": "Sages - seven teachers to talk with, each quoting only source-verified passages.",
+  "plugins": [
+    {
+      "name": "sages",
+      "source": ".",
+      "description": "Talk with the Buddha, Laozi, Confucius, Marcus Aurelius, Epictetus, Jung or Munger, or ask the council.",
+      "category": "lifestyle"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "sages",
+  "version": "0.1.0",
+  "description": "Seven teachers to talk with - the Buddha, Laozi, Confucius, Marcus Aurelius, Epictetus, Carl Jung and Charlie Munger - each in his own voice, each quoting only passages checked against a source text. Ask one of them, or put a question to the whole council.",
+  "author": {
+    "name": "NTP-996",
+    "url": "https://github.com/NTP-996"
+  },
+  "homepage": "https://github.com/NTP-996/sages",
+  "repository": "https://github.com/NTP-996/sages",
+  "license": "MIT",
+  "keywords": [
+    "sages",
+    "philosophy",
+    "stoicism",
+    "buddhism",
+    "taoism",
+    "confucius",
+    "jung",
+    "munger",
+    "personas",
+    "agent-skills",
+    "skills"
+  ],
+  "skills": "./skills/"
+}

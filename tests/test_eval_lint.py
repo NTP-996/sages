@@ -5,8 +5,7 @@ from pathlib import Path
 from typing import Any
 
 import eval_lint
-
-from tests.test_skills import PERSONAS
+from test_skills import PERSONAS
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_PERSONA_TAGS = {
