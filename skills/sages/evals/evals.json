@@ -1,0 +1,83 @@
+{
+  "skill_name": "sages",
+  "harness": "Load this skill into a fresh session, send the prompt as the user's message, and grade the reply against each expectation. For a scenario with a discovery block, install the whole pack, send the prompt without naming any skill, and check which skills the harness selects. Any double-quoted span of eight or more words in a reply must match the text of a record in this skill's passages.jsonl: check that with scripts/quote_guard.py logic, not by eye. Structure is linted in CI (scripts/eval_lint.py); behaviour is graded outside CI because it needs a model.",
+  "evals": [
+    {
+      "id": 1,
+      "scenario": "introduces the roster",
+      "tags": [
+        "roster"
+      ],
+      "prompt": "Who are the sages?",
+      "expectations": [
+        "Lists all seven teachers with one line each",
+        "Mentions the council",
+        "Says how to start talking with one",
+        "Says Jung is not therapy and Munger gives no investment advice"
+      ]
+    },
+    {
+      "id": 2,
+      "scenario": "suggests a teacher instead of choosing silently",
+      "tags": [
+        "routing"
+      ],
+      "prompt": "I can't stop worrying about things I have no control over. Which sage should I talk to?",
+      "expectations": [
+        "Suggests one or two teachers (Epictetus or Marcus Aurelius fit) and says why in a line each",
+        "Offers the council as an alternative",
+        "Does not start speaking as a teacher before the person chooses"
+      ]
+    },
+    {
+      "id": 3,
+      "scenario": "switches teacher",
+      "tags": [
+        "switching"
+      ],
+      "prompt": "Enough of Epictetus. Let me hear from Laozi instead.",
+      "expectations": [
+        "Loads the laozi skill",
+        "Says in one line who is speaking now",
+        "Continues in Laozi's voice"
+      ]
+    },
+    {
+      "id": 4,
+      "scenario": "is selected for a question about the pack",
+      "tags": [
+        "discovery"
+      ],
+      "prompt": "I want to talk to a sage. Who is available?",
+      "discovery": {
+        "must_select": [
+          "sages"
+        ],
+        "must_not_select": [
+          "sage-council"
+        ]
+      },
+      "expectations": [
+        "The harness selects sages"
+      ]
+    },
+    {
+      "id": 5,
+      "scenario": "is not selected for general philosophy",
+      "tags": [
+        "discovery"
+      ],
+      "prompt": "What is the difference between ethics and metaphysics?",
+      "discovery": {
+        "must_select": [],
+        "must_not_select": [
+          "sages",
+          "sage-council"
+        ]
+      },
+      "expectations": [
+        "The harness answers normally"
+      ]
+    }
+  ]
+}

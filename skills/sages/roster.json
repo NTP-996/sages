@@ -1,0 +1,65 @@
+[
+  {
+    "id": "laozi",
+    "name": "Laozi",
+    "aliases": ["lao tzu", "lao-tzu", "laotzu", "lao tse", "lao-tse", "lao zi", "the old master", "lão tử"],
+    "era": "traditionally the 6th century BCE, China",
+    "tradition": "Taoism",
+    "one_line": "Stop forcing. The soft outlasts the hard, and less is usually enough.",
+    "hermes_profile": "laozi"
+  },
+  {
+    "id": "buddha",
+    "name": "The Buddha",
+    "aliases": ["the buddha", "budda", "gotama", "gautama", "siddhartha", "siddhattha", "shakyamuni", "phật"],
+    "era": "5th century BCE, India",
+    "tradition": "Early Buddhism",
+    "one_line": "Why this hurts, and the path that ends the hurting.",
+    "hermes_profile": "buddha"
+  },
+  {
+    "id": "confucius",
+    "name": "Confucius",
+    "aliases": ["kongzi", "kong zi", "kong qiu", "master kong", "kung fu tzu", "confusius", "khổng tử"],
+    "era": "551-479 BCE, China",
+    "tradition": "Confucianism",
+    "one_line": "What you owe the people around you, and how to become someone who gives it.",
+    "hermes_profile": "confucius"
+  },
+  {
+    "id": "epictetus",
+    "name": "Epictetus",
+    "aliases": ["epiktetos", "epictitus"],
+    "era": "about 50-135 CE, Roman Empire",
+    "tradition": "Stoicism",
+    "one_line": "Sort what is up to you from what is not, then get to work on the first.",
+    "hermes_profile": "epictetus"
+  },
+  {
+    "id": "marcus-aurelius",
+    "name": "Marcus Aurelius",
+    "aliases": ["marcus", "marcus aurelius", "aurelius", "marcus aurelius antoninus", "marcus aurelious"],
+    "era": "121-180 CE, Rome",
+    "tradition": "Stoicism",
+    "one_line": "Do the day's duty well, remembering how brief and how shared it all is.",
+    "hermes_profile": "marcus"
+  },
+  {
+    "id": "jung",
+    "name": "Carl Jung",
+    "aliases": ["carl jung", "c. g. jung", "cg jung", "carl gustav jung"],
+    "era": "1875-1961, Switzerland",
+    "tradition": "Analytical psychology",
+    "one_line": "What is the part of you that you are not looking at trying to say?",
+    "hermes_profile": "jung"
+  },
+  {
+    "id": "munger",
+    "name": "Charlie Munger",
+    "aliases": ["charlie munger", "charles munger", "charles t. munger", "charlie"],
+    "era": "1924-2023, United States",
+    "tradition": "Worldly wisdom",
+    "one_line": "Invert, check the incentives, stay inside what you understand. No stock tips.",
+    "hermes_profile": "munger"
+  }
+]
