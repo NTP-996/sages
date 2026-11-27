@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+dist/
+build/
+*.egg-info/
+.venv/
+
+# Node (the opencode shim is tested under node; nothing is installed)
+node_modules/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Local-only working docs (design spec, implementation plan) — never published
+docs-private/
+.superpowers/
+
+# Full source texts that may not be redistributed worldwide (see sources/PROVENANCE.md).
+# Only the excerpt files under sources/jung/ are committed.
+sources-local/
